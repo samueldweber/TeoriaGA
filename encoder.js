@@ -1,38 +1,30 @@
 const fs = require('fs');
 const LZW = require('./lzw');
-const huffman = require('./huffman');
+let HuffmanEncoding = require('./huff.js');
 
-var lzw = new LZW(8);
-var huff = new huffman();
-var input = "TOBEORNOTTOBEORTOBEORNOT#";
-var compressed = lzw.compress(input);
-console.log(input);
-console.log(compressed);
-console.log(lzw.decompress(compressed));
+let file = fs.readFileSync('./alice29.txt').toString();
 
-var file = fs.readFileSync('./alice29.txt').toString();
+const lzw = new LZW(8);
+const huff = new HuffmanEncoding(file);
 
-var compfile = lzw.compress(file);
-var compstr = compfile.join(',');
+console.log("INITIAL FILE " + file);
 
-fs.writeFile("./outputalice.txt", compstr, function(err) {
-    if(err) {
-        return console.log(err);
-    }
-
-    console.log("The file was saved!");
+fs.writeFile("./original_input.txt", file, (err) => {
+    if (err) throw err;
+    console.log("The INITIAL file was saved!");
 }); 
 
-//var tocode = 'abracadabra';
+huff.inspect_encoding();
+let huff_encoded = huff.encoded_string;
+fs.writeFile("./huff_encoded.txt", huff_encoded, (err) => {
+    if (err) throw err;
+    console.log("The huff_encoded file was saved!");
+}); 
 
-//var cipher = huff.getCodesFromText(tocode);
-//var encodedarr = huff.encode(tocode, cipher);
+let lzw_compressed = lzw.compress(huff_encoded)
+fs.writeFile("./compressed_input.txt", lzw_compressed, (err) => {
+    if (err) throw err;
+    console.log("The Compressed file was saved!");
+}); 
 
-//var codedtext = encodedarr.join(',');
-
-//var doubled = lzw.compress(codedtext);
-
-//var decoded = huff.decode(encodedarr, cipher);
-
-//console.warn(codedtext);
-//console.warn(doubled);
+module.exports = {file, lzw, huff, lzw_compressed}
