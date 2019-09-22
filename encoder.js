@@ -7,7 +7,7 @@ let file = fs.readFileSync('./alice29.txt').toString();
 const lzw = new LZW(8);
 const huff = new HuffmanEncoding(file);
 
-console.log("INITIAL FILE " + file);
+// console.log("INITIAL FILE " + file);
 
 fs.writeFile("./original_input.txt", file, (err) => {
     if (err) throw err;
@@ -19,6 +19,11 @@ let huff_encoded = huff.encoded_string;
 fs.writeFile("./huff_encoded.txt", huff_encoded, (err) => {
     if (err) throw err;
     console.log("The huff_encoded file was saved!");
+}); 
+
+fs.writeFile("./huffman_tree.txt",  JSON.stringify(huff.return_tree()), (err) => {
+    if (err) throw err;
+    console.log("The HUFF TREE file was saved!");
 }); 
 
 let lzw_compressed = lzw.compress(huff_encoded)

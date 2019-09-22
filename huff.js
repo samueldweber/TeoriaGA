@@ -1,3 +1,5 @@
+
+
 function BinaryHeap(scoreFunction) {
     this.content = [];
     this.scoreFunction = scoreFunction;
@@ -112,7 +114,6 @@ function BinaryHeap(scoreFunction) {
       }
     }
   };
-  
 
     function HuffmanEncoding(str) {
         this.str = str;
@@ -141,13 +142,17 @@ function BinaryHeap(scoreFunction) {
         var tree = pq.pop();
         this.encoding = {};
         this._generate_encoding(tree[1], "");
-      
+        this.return_tree();
         this.encoded_string = ""
         for (var i = 0; i < this.str.length; i++) {
           this.encoded_string += this.encoding[str[i]];
         }
       }
-      
+
+      HuffmanEncoding.prototype.return_tree = function(){
+        return this.encoding;
+      }
+
       HuffmanEncoding.prototype._generate_encoding = function(ary, prefix) {
         if (ary instanceof Array) {
           this._generate_encoding(ary[0], prefix + "0");
@@ -164,39 +169,6 @@ function BinaryHeap(scoreFunction) {
         }
       }
       
-      HuffmanEncoding.prototype.decode = function(encoded) {
-        var rev_enc = {};
-        for (var ch in this.encoding)
-          rev_enc[this.encoding[ch]] = ch;
-      
-        var decoded = "";
-        var pos = 0;
-        while (pos < encoded.length) {
-          var key = ""
-          while (!(key in rev_enc)) {
-            key += encoded[pos];
-            pos++;
-          }
-          decoded += rev_enc[key];
-        }
-        return decoded;
-      }
-  
 
-
-  module.exports = HuffmanEncoding;
-  
-//   var s = "this is an example for huffman encoding";
-//   console.log("INITIAL STRING " + s);
-  
-//   var huff = new HuffmanEncoding(s);
-//   huff.inspect_encoding();
-  
-//   var e = huff.encoded_string;
-//   console.log("HUFF ENCODED STRING " + e);
-  
-//   var t = huff.decode(e);
-//   console.log("HUFF DECODED STRING " +t);
-  
-//   console.log("is decoded string same as original? " + (s == t));
+  module.exports = HuffmanEncoding
   
